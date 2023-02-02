@@ -1,0 +1,83 @@
+<p-toast [style]="{ marginTop: '80px' }"></p-toast>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <h4>UnAllocated Users</h4>
+      <div>
+        <p-table [value]="available" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-person>
+            <tr
+              pDraggable="products"
+              pDroppable="products"
+              (onDragStart)="dragStart(person)"
+              (onDragEnd)="dragEnd()"
+              (onDrop)="dropEndHierarchyNodeToDeAllocation()"
+            >
+              <td>{{ person.name }}</td>
+              <td>{{ person.age }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="col-md-8 overflow-auto">
+      <p-organizationChart
+        [value]="data2"
+        selectionMode="single"
+        [(selection)]="selectedNode"
+        (onNodeSelect)="onNodeSelect($event)"
+        styleClass="company"
+      >
+        <ng-template let-node pTemplate="person">
+          <!-- <div class="node-header">{{ node.label }}</div> -->
+          <div class="node-content">
+            <div>{{ node.data.name }}</div>
+            <div
+              pDroppable="products"
+              (onDrop)="drop(node.data)"
+              (onDragEnter)="dragEnter()"
+              (onDragLeave)="dragLeave()"
+              responsiveLayout="scroll"
+              pDraggable="products"
+              (onDragStart)="dragStartForHierarchy(node.data)"
+              (onDragEnd)="dragEndForHierarchy()"
+            >
+              {{ node.data.id }}
+              <hr />
+            </div>
+          </div>
+        </ng-template>
+      </p-organizationChart>
+    </div>
+    <div class="col-md-2">
+      <div>
+        <h4>Allocated Users</h4>
+        <p-table [value]="unAvailable" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+            </tr>
+          </ng-template>
+          <ng-template
+            pTemplate="body"
+            let-person
+            
+          >
+            <tr>
+              <td>{{ person.name }}</td>
+              <td>{{ person.age }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
